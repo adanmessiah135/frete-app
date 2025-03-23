@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resultado do Cálculo de Frete</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Resultado do Cálculo de Frete</h1>
+        <div class="success">Dados salvos com sucesso no banco de dados!</div>
+        <div class="resultado">
+            <p><strong>Data da Viagem:</strong> {{ resultado.data_viagem }}</p>
+            <p><strong>CTE:</strong> {{ resultado.cte }}</p>
+            <p><strong>Origem:</strong> {{ resultado.origem }}</p>
+            <p><strong>Cidades de Destino:</strong> {{ resultado.cidades|join(', ') }}</p>
+            <p><strong>Notas Fiscais:</strong> {{ resultado.nfs }}</p>
+            <p><strong>Pesos Fornecidos:</strong> {{ resultado.pesos|join(', ') }}</p>
+            <p><strong>Valores dos Produtos:</strong> {{ resultado.valores|join(', ') }}</p>
+            <p><strong>Peso Usado no Cálculo:</strong> {{ resultado.peso_usado }}</p>
+            <p><strong>Peso Mínimo da Categoria:</strong> {{ resultado.peso_minimo }}</p>
+            <p><strong>Número de Entregas:</strong> {{ resultado.num_entregas }}</p>
+            <p><strong>Maior Tarifa Usada:</strong> {{ resultado.maior_frete }}</p>
+            <p><strong>Valor Total dos Produtos:</strong> {{ resultado.valor_total_produtos }}</p>
+            <p><strong>GRIS (0,002% do valor dos produtos):</strong> {{ resultado.gris }}</p>
+            <p><strong>Placa do Veículo:</strong> {{ resultado.placa }}</p>
+            <p><strong>Número do DT:</strong> {{ resultado.dt }}</p>
+            <p><strong>Tipo de Transporte:</strong> {{ resultado.tipo }}</p>
+            
+            <h2>Fretes Desmembrados por Cidade (usando a maior tarifa):</h2>
+            {% for item in resultado.fretes_desmembrados %}
+                <div class="frete-item">
+                    <p><strong>Cidade:</strong> {{ item.cidade }}</p>
+                    <p><strong>Tarifa Usada:</strong> {{ item.tarifa }}</p>
+                    <p><strong>Peso:</strong> {{ item.peso }}</p>
+                    <p><strong>Valor do Produto:</strong> {{ item.valor_produto }}</p>
+                    <p><strong>Valor do Frete:</strong> {{ item.valor_frete }}</p>
+                </div>
+            {% endfor %}
+            
+            <p><strong>Valor Total do Frete:</strong> {{ resultado.valor_total_frete }}</p>
+        </div>
+
+        <a href="{{ url_for('index') }}">Novo Cálculo</a>
+    </div>
+</body>
+</html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cálculo de Frete</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Cálculo de Frete</h1>
+        {% if error %}
+            <div class="error">{{ error }}</div>
+        {% endif %}
+        <div id="formError" class="error" style="display: none;"></div>
+        <form id="freteForm" method="POST" onsubmit="return validarFormulario()">
+            <div id="cidadesContainer">
+                <div class="cidade-row">
+                    <select name="cidade_0" required>
+                        <option value="" disabled selected>Selecione a Cidade</option>
+                        {% for cidade in cidades_disponiveis %}
+                            <option value="{{ cidade }}">{{ cidade.title() }}</option>
+                        {% endfor %}
+                    </select>
+                    <input type="number" name="peso_0" placeholder="Peso (toneladas)" step="0.001" required>
+                    <input type="number" name="valor_0" placeholder="Valor do Produto (R$)" step="0.01" required>
+                </div>
+            </div>
+            <button type="button" onclick="adicionarCidade()">Adicionar Cidade</button>
+            <div>
+                <label>Número de Entregas:</label>
+                <input type="number" name="num_entregas" required>
+            </div>
+            <div>
+                <label>Data da Viagem (AAAA-MM-DD):</label>
+                <input type="date" name="data_viagem" required>
+            </div>
+            <div>
+                <label>Número do CTE:</label>
+                <input type="text" name="cte" required>
+            </div>
+            <div>
+                <label>Notas Fiscais (separadas por /, ex.: 27586/27587):</label>
+                <input type="text" name="nfs" required>
+            </div>
+            <div>
+                <label>Placa do Veículo:</label>
+                <input type="text" name="placa" required>
+            </div>
+            <div>
+                <label>Número do DT:</label>
+                <input type="text" name="dt" required>
+            </div>
+            <div>
+                <label>Tipo de Transporte:</label>
+                <select name="tipo" required>
+                    <option value="DEDICADO">DEDICADO</option>
+                    <option value="TERCEIRO">TERCEIRO</option>
+                </select>
+            </div>
+            <input type="hidden" name="num_cidades" id="numCidades" value="1">
+            <button type="submit">Calcular e Salvar</button>
+        </form>
+    </div>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <script>
+        // Passar a lista de cidades para o JavaScript
+        const cidadesDisponiveis = {{ cidades_disponiveis|tojson }};
+        console.log("Cidades disponíveis:", cidadesDisponiveis); // Depuração
+    </script>
+</body>
+</html>
